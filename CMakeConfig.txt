@@ -28,14 +28,4 @@ if(0)
   endif (SFML_FOUND)
 endif()
 
-###### OpenCV libraries ######
-if(0)
-  find_package(OpenCV REQUIRED)
-  if (OpenCV_FOUND)
-    list(APPEND EXTRA_LIBS ${OpenCV_LIBS})
-    list(APPEND EXTRA_INCLUDES ${OpenCV_INCLUDE_DIRS})
-    message("-- Opencv library Found")
-  else ()
-    message("Couldn't find Opencv library")
-  endif (OpenCV_FOUND)
-endif()
+

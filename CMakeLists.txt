@@ -56,6 +56,18 @@ cmake_minimum_required(VERSION 3.3)
 include(CMakeConfig.txt)
 project(${EXEC_NAME} VERSION ${PROJECT_VERSION})
 
+###### OpenCV libraries ######
+if(1)
+  find_package(OpenCV REQUIRED)
+  if (OpenCV_FOUND)
+    list(APPEND EXTRA_LIBS ${OpenCV_LIBS})
+    list(APPEND EXTRA_INCLUDES ${OpenCV_INCLUDE_DIRS})
+    message("-- Opencv library Found")
+  else ()
+    message("Couldn't find Opencv library")
+  endif (OpenCV_FOUND)
+endif()
+
 ###### LIBRARY NAME ######
 set(LIB_NAME ${EXEC_NAME}.${PROJECT_VERSION})
 
