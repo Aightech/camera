@@ -18,13 +18,15 @@ class Camera
     public:
     Camera(int index = 0, int w = 640, int h = 360) : cap_index(index)
     {
-        m_cap.open(cap_index, cv::CAP_ANY);
+        m_cap.open(cap_index, cv::CAP_V4L);
         if(!m_cap.isOpened())
             std::cout << "Camera " << cap_index << " not found" << std::endl;
 
         m_cap.set(cv::CAP_PROP_FRAME_WIDTH, w);
         m_cap.set(cv::CAP_PROP_FRAME_HEIGHT, h);
+
         m_cap.read(frame);
+
         this->set_calibration();
 
         m_dstTri[0] = cv::Point2f(0.f, 0.f);
@@ -49,7 +51,6 @@ class Camera
                 it++;
                 y = (*it);
                 srcTri[i] = cv::Point2f(x,y);
-                std::cout << x << " " << y << std::endl;
                 i++;    
             }
             m_fs.release();
