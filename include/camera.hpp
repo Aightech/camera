@@ -18,7 +18,7 @@ class Camera
     public:
     Camera(int index = 0, int w = -1, int h = -1) : cap_index(index)
     {
-        m_cap.open(cap_index, cv::CAP_V4L);
+      m_cap.open(cap_index);// //, cv::CAP_V4L);
         if(!m_cap.isOpened())
             std::cout << "Camera " << cap_index << " not found" << std::endl;
         std::cout << "Camera " << cap_index << " opened" << std::endl;
@@ -30,10 +30,14 @@ class Camera
         if(h > 0)
             m_cap.set(cv::CAP_PROP_FRAME_HEIGHT, h);
 
-
+	m_cap.set(cv::CAP_PROP_FPS, 30);
+	m_cap.set(cv::CAP_PROP_FOURCC,  cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
+	
         w = m_cap.get(cv::CAP_PROP_FRAME_WIDTH);
         h = m_cap.get(cv::CAP_PROP_FRAME_HEIGHT);
-        std::cout << "Resolustion " << w << "*"<<h << std::endl;
+	int fps = m_cap.get(cv::CAP_PROP_FPS);
+
+        std::cout << "Resolustion " << w << "*"<<h << " " << fps << "fps"<< std::endl;
 
 
         m_imageSize = cv::Size(w, h);
@@ -110,10 +114,12 @@ class Camera
     ~Camera(){
         if(m_cap.isOpened())
             m_cap.release();
+	std::cout << "Setting video writer " << wrap_index << std::endl;
         if(m_video != nullptr)
         {
+	  std::cout << "closing writer " << wrap_index << std::endl;
             m_video->release();
-            delete m_video;
+            //delete m_video;
         }
     };
 
@@ -171,13 +177,18 @@ class Camera
         }
     }
 
-    void set_video_writer(std::string name, int fps=10)
+    void set_video_writer(std::string name, int fps=30)
     {
-        m_video = new cv::VideoWriter(name+".mp4", cv::VideoWriter::fourcc('a', 'v', 'c', '1'), FP_SUBNORMAL, m_imageSize);
+      std::cout << "Setting video writer " << wrap_index << std::endl;
+      m_video = new cv::VideoWriter();
+      bool o = m_video->open(name+".avi", cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), FP_SUBNORMAL, m_imageSize);
+      std::cout << "Setting video writer " << o << std::endl;
+      
     }
 
     void record_frame(bool transformed = false)
     {
+      std::cout << "writer " << wrap_index << std::endl;
         m_video->write(this->getFrame(transformed));
     }
 

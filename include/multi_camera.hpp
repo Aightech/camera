@@ -14,7 +14,12 @@ class MultiCam
     MultiCam(){
 
     };
-    ~MultiCam(){};
+    ~MultiCam()
+  {
+    for(auto c : m_cameras)
+      delete c;
+    
+  };
 
     void
     addCamera(int index = 0, int w = -1, int h = -1)
@@ -34,7 +39,7 @@ class MultiCam
     set_video_writer(std::string name, int fps=10)
     {
         for(int i = 0; i < m_cameras.size(); i++)
-            m_cameras[i]->set_video_writer(name + std::to_string(i) + ".mp4",
+            m_cameras[i]->set_video_writer(name + std::to_string(i),
                                            fps);
     }
 

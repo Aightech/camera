@@ -12,16 +12,18 @@ main(int argc, char **argv)
 {
     std::string name = (argc>1)?argv[1]:"vid";
     MultiCam cameras;
-    for(int i = 0; i < 2; i++) cameras.addCamera(i *2, 640, 480);
-    //for(int i = 0; i < 2; i++) cameras.set_video_writer(name,10);
+    int n =argc-2;
+    std::cout << "Number of cameras: " << n << std::endl;
+    for(int i = 0; i < n; i++) cameras.addCamera(atoi(argv[i+2]), 1920, 1080);//3264, 2448);//1920, 1080);//640, 480);//3264, 2448);
+    cameras.set_video_writer(name,10);
 
     
     for(;;)
     {
-        for(int i = 0; i < 2; i++)
+        for(int i = 0; i < n; i++)
         {
             cv::imshow("Warp" + std::to_string(i), cameras.getFrame(i, true));
-            //cameras.record_frame(i);
+            cameras.record_frame(i);
         }
 
         if(cv::waitKey(5) >= 0)
