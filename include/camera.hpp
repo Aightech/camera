@@ -123,6 +123,23 @@ class Camera
         }
     };
 
+  void
+  set_resolution(int w = -1, int h = -1)
+  {
+    
+    	m_cap.set(cv::CAP_PROP_FPS, 30);
+	m_cap.set(cv::CAP_PROP_FOURCC,  cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
+	if(w > 0)
+            m_cap.set(cv::CAP_PROP_FRAME_WIDTH, w);
+        if(h > 0)
+            m_cap.set(cv::CAP_PROP_FRAME_HEIGHT, h);	
+        w = m_cap.get(cv::CAP_PROP_FRAME_WIDTH);
+        h = m_cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+	int fps = m_cap.get(cv::CAP_PROP_FPS);
+
+        std::cout << "Resolustion " << w << "*"<<h << " " << fps << "fps"<< std::endl;
+  };
+
 
     void
     set_calibration(std::string path="../docs/out_camera_data.xml")
