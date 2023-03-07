@@ -24,6 +24,7 @@ class MultiCam
     void
     addCamera(int index = 0, int w = -1, int h = -1)
     {
+      std::cout << index << std::endl;
         m_cameras.push_back(new Camera(index, w, h));
     }
 
