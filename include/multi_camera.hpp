@@ -50,7 +50,7 @@ class MultiCam
         m_cameras[index]->record_frame();
     }
 
-    private:
+    public:
     std::vector<Camera *> m_cameras;
 };
 

@@ -168,6 +168,7 @@ class Camera
 
         m_fs.open("../docs/wrap" + std::to_string(cap_index) + ".xml",
                   cv::FileStorage::WRITE);
+	std::cout << "ok" << std::endl;
         m_fs << "srcTri"
              << "[" << srcTri[0] << srcTri[1] << srcTri[2] << srcTri[3];
         m_fs.release();
