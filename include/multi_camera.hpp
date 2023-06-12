@@ -1,6 +1,7 @@
 #ifndef __MULTI_CAMERA_HPP__
 #define __MULTI_CAMERA_HPP__
 
+#include "strANSIseq.hpp"
 #include <ctype.h>
 #include <iostream>
 #include <stdio.h>
@@ -8,24 +9,20 @@
 
 #include "camera.hpp"
 
-class MultiCam
+class MultiCam : public virtual ESC::CLI
 {
     public:
-    MultiCam(){
-
-    };
+    MultiCam(int verbose = -1) : CLI(verbose, "multi_cam"){};
     ~MultiCam()
-  {
-    for(auto c : m_cameras)
-      delete c;
-    
-  };
+    {
+        for(auto c : m_cameras) delete c;
+    };
 
     void
     addCamera(int index = 0, int w = -1, int h = -1)
     {
-      std::cout << index << std::endl;
-        m_cameras.push_back(new Camera(index, w, h));
+        std::cout << index << std::endl;
+        m_cameras.push_back(new Camera(index)); //, w, h));
     }
 
     cv::Mat
@@ -37,14 +34,14 @@ class MultiCam
     }
 
     void
-    set_video_writer(std::string name, int fps=10)
+    set_video_writer(std::string name, int fps = 10)
     {
         for(int i = 0; i < m_cameras.size(); i++)
-            m_cameras[i]->set_video_writer(name + std::to_string(i),
-                                           fps);
+            m_cameras[i]->set_video_writer(name + std::to_string(i), fps);
     }
 
-    void record_frame(unsigned index = 0)
+    void
+    record_frame(unsigned index = 0)
     {
         if(index >= m_cameras.size())
             return;
