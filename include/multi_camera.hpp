@@ -21,8 +21,9 @@ class MultiCam : public virtual ESC::CLI
     void
     addCamera(int index = 0, int w = -1, int h = -1)
     {
-        std::cout << index << std::endl;
-        m_cameras.push_back(new Camera(index)); //, w, h));
+        logln("Adding camera " + std::to_string(index), true);
+        m_cameras.push_back(new Camera(index, m_verbose-1)); //, w, h));
+        m_cameras.back()->set_resolution(w, h);
     }
 
     cv::Mat
@@ -46,6 +47,13 @@ class MultiCam : public virtual ESC::CLI
         if(index >= m_cameras.size())
             return;
         m_cameras[index]->record_frame();
+    }
+
+    Camera* get_cam(int index)
+    {
+        if(index >= m_cameras.size())
+            throw std::string("Camera index out of range");
+        return m_cameras[index];
     }
 
     public:

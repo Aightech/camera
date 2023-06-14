@@ -21,9 +21,7 @@ class Camera : public virtual ESC::CLI
         : cap_index(index), CLI(verbose, "camera_" + std::to_string(index))
     {
         m_cap.open(cap_index); // //, cv::CAP_V4L);
-        if(m_cap.isOpened())
-            std::cout << "Camera " << cap_index << " not found" << std::endl;
-        else
+        if(!m_cap.isOpened())
             throw std::string("Camera " + std::to_string(cap_index) +
                               " not found");
 
@@ -44,10 +42,9 @@ class Camera : public virtual ESC::CLI
     {
         if(m_cap.isOpened())
             m_cap.release();
-        std::cout << "Setting video writer " << wrap_index << std::endl;
         if(m_video != nullptr)
         {
-            std::cout << "closing writer " << wrap_index << std::endl;
+            logln("Closing video writer " + std::to_string(wrap_index), true);
             m_video->release();
             //delete m_video;
         }
@@ -67,7 +64,7 @@ class Camera : public virtual ESC::CLI
         w = m_cap.get(cv::CAP_PROP_FRAME_WIDTH);
         h = m_cap.get(cv::CAP_PROP_FRAME_HEIGHT);
         int fps = m_cap.get(cv::CAP_PROP_FPS);
-        logln("Resolustion " + std::to_string(m_imageSize.width) + "*" +
+        logln("Resolution " + std::to_string(m_imageSize.width) + "*" +
                   std::to_string(m_imageSize.height) + " " +
                   std::to_string(m_fps) + "fps",
               true);
