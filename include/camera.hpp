@@ -179,8 +179,22 @@ class Camera : public virtual ESC::CLI
     {
         if(path == "")
             path = m_wrap_path;
+
+        double dist_x = sqrt(pow(this->srcTri[0].x - this->srcTri[1].x, 2) +
+                             pow(this->srcTri[0].y - this->srcTri[1].y, 2));
+        double dist_y = sqrt(pow(this->srcTri[0].x - this->srcTri[3].x, 2) +
+                             pow(this->srcTri[0].y - this->srcTri[3].y, 2));
+        logln("dist_x: " + std::to_string(dist_x), true);
+        logln("dist_y: " + std::to_string(dist_y), true);
+
         m_warpped_frame =
-            cv::Mat::zeros(getFrame().rows, getFrame().cols, getFrame().type());
+            cv::Mat::zeros(int(dist_y), int(dist_x), getFrame().type());
+
+        m_dstTri[0] = cv::Point2f(0.f, 0.f);
+        m_dstTri[1] = cv::Point2f(dist_x - 1.f, 0.f);
+        m_dstTri[2] = cv::Point2f(dist_x - 1.f, dist_y - 1.f);
+        m_dstTri[3] = cv::Point2f(0.f, dist_y - 1.f);
+
         m_warp_mat = cv::getPerspectiveTransform(srcTri, m_dstTri);
 
         m_fs.open(path, cv::FileStorage::WRITE);
@@ -203,8 +217,8 @@ class Camera : public virtual ESC::CLI
 
         if(transformed)
         {
-            cv::warpPerspective(m_frame, m_warpped_frame, m_warp_mat,
-                                m_imageSize);
+            cv::warpPerspective(m_frame, m_warpped_frame, m_warp_mat, cv::Size(
+                m_warpped_frame.cols, m_warpped_frame.rows));
             return m_warpped_frame;
         }
         else
