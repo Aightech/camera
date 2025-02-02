@@ -15,11 +15,17 @@ main(int argc, char **argv)
         std::cout << "Usage: " << argv[0] << " camera_index" << std::endl;
         return 0;
     }
+
+    std::cout << "Simple demo of the camera class." << std::endl;
+    std::cout << "select the 4 corner points of the region to be warped." << std::endl;
+
     int index = atoi(argv[1]);
     Camera camera(index, 1);
     camera.set_resolution(640, 480);
     camera.set_wrap("wrap.xml");
 
+    //until the user presses a key 
+    std::cout << "Press any key to exit." << std::endl;
     for(;;)
     {
         cv::imshow("Warp", camera.getFrame(true));
