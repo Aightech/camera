@@ -20,7 +20,7 @@ class Camera : public virtual ESC::CLI
     Camera(int index = 0, int verbose = -1)
         : cap_index(index), CLI(verbose, "camera_" + std::to_string(index))
     {
-        m_cap.open(cap_index); // //, cv::CAP_V4L);
+        m_cap.open(cap_index, cv::CAP_V4L);
         if(!m_cap.isOpened())
             throw std::string("Camera " + std::to_string(cap_index) +
                               " not found");

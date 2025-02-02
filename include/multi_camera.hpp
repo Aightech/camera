@@ -23,7 +23,11 @@ class MultiCam : public virtual ESC::CLI
     {
         logln("Adding camera " + std::to_string(index), true);
         m_cameras.push_back(new Camera(index, m_verbose-1)); //, w, h));
-        m_cameras.back()->set_resolution(w, h);
+        if(w > 0 && h > 0)
+        {
+            logln("Setting resolution to " + std::to_string(w) + "x" + std::to_string(h), true);
+            m_cameras.back()->set_resolution(w, h);
+        }
     }
 
     cv::Mat
