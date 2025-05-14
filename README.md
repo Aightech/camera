@@ -5,6 +5,12 @@ This module defines a C++ class Camera that provides an interface to capture vid
 # Requirements
 - CMake
 - OpenCV
+- 
+### Submodules dependencies
+#### libraries
+- [strANSIseq](lib/strANSIseq/README.md)
+#### Tools
+- [built_lsl](tool_lib/built_lsl/README.md)
 
 # Building source code
 
@@ -25,3 +31,7 @@ to get the demonstration app usage.
 
 # Example
 Open the ![main.cpp](cpp:src/main.cpp) file to get an example how to use the lib.
+
+
+# Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
